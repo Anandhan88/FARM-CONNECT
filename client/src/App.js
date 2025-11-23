@@ -20,7 +20,6 @@ import PublicRoute from './components/PublicRoute';
 import Home from './pages/Home';
 import { AuthProvider } from './context/AuthContext';
 import { ShoppingContextProvider } from './context/ShoppingContext';
-import testApi from './test-api';
 
 
 function NotFound() {
@@ -35,11 +34,7 @@ function NotFound() {
 }
 
 function App() {
-  // Make test API available globally for debugging
   React.useEffect(() => {
-    window.testApi = testApi;
-    console.log('Test API function available as window.testApi()');
-    
     // Initialize auto-server recovery service (but don't start it automatically)
     const autoServer = new AutoServerService();
     window.autoServerService = autoServer;
