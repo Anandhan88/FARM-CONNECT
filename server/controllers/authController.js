@@ -77,13 +77,20 @@ exports.register = async (req, res) => {
 
 // LOGIN
 exports.login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
 
   try {
     // Find user
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(400).json({ msg: 'Invalid credentials' });
+    }
+
+    // Check if the selected role matches their actual role, if not update it (for testing/flexibility)
+    if (role && user.role !== role) {
+      console.log(`Updating user role from ${user.role} to ${role} on login`);
+      user.role = role;
+      await user.save();
     }
 
     // Compare passwords

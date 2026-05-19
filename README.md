@@ -74,7 +74,7 @@ Before you begin, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/aadhithyafullfur/FarmConnect.git
+git clone https://github.com/anand/FarmConnect.git
 cd FarmConnect
 ```
 
@@ -325,7 +325,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you encounter any issues:
 
 1. Check the [Troubleshooting](#troubleshooting) section
-2. Search existing [GitHub Issues](https://github.com/aadhithyafullfur/FarmConnect/issues)
+2. Search existing [GitHub Issues](https://github.com/anand/FarmConnect/issues)
 3. Create a new issue with detailed description and error logs
 
 ## 🎉 Acknowledgments

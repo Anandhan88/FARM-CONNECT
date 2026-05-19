@@ -152,6 +152,7 @@ function Register() {
                 onChange={(e) => setName(e.target.value)}
                 className="appearance-none relative block w-full px-4 py-3 border border-gray-700 placeholder-gray-500 text-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/50 focus:z-10 sm:text-sm bg-gray-800/90 backdrop-blur-sm transition-all duration-200"
                 placeholder="Full name"
+                autoComplete="off"
               />
             </div>
             <div>
@@ -167,6 +168,7 @@ function Register() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="appearance-none relative block w-full px-4 py-3 border border-gray-700 placeholder-gray-500 text-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/50 focus:z-10 sm:text-sm bg-gray-800/90 backdrop-blur-sm transition-all duration-200"
                 placeholder="Email address"
+                autoComplete="off"
               />
             </div>
             <div>
@@ -182,6 +184,7 @@ function Register() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="appearance-none relative block w-full px-4 py-3 border border-gray-700 placeholder-gray-500 text-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500/50 focus:border-green-500/50 focus:z-10 sm:text-sm bg-gray-800/90 backdrop-blur-sm transition-all duration-200"
                 placeholder="Password"
+                autoComplete="new-password"
               />
             </div>
             <div>
