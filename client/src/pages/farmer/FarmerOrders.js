@@ -37,7 +37,7 @@ function FarmerOrders() {
 
   const filteredOrders = orders.filter(order => {
     const matchesFilter = filter === 'all' || order.status === filter;
-    const matchesSearch = order.buyer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    const matchesSearch = order.buyerId?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          order._id.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesFilter && matchesSearch;
   });
@@ -175,11 +175,11 @@ function FarmerOrders() {
                         </span>
                       </div>
                       <div className="mt-2 text-gray-400">
-                        <p><strong>Buyer:</strong> {order.buyer.name}</p>
-                        <p><strong>Email:</strong> {order.buyer.email}</p>
+                        <p><strong>Buyer:</strong> {order.buyerId?.name}</p>
+                        <p><strong>Email:</strong> {order.buyerId?.email}</p>
                         <p><strong>Order Date:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
-                        {order.deliveryAddress && (
-                          <p><strong>Delivery Address:</strong> {order.deliveryAddress}</p>
+                        {order.deliveryInfo?.address?.street && (
+                          <p><strong>Delivery Address:</strong> {order.deliveryInfo.address.street}</p>
                         )}
                       </div>
                     </div>
@@ -201,26 +201,26 @@ function FarmerOrders() {
                     {order.items.map((item, index) => (
                       <div key={index} className="flex items-center justify-between p-4 bg-gray-700/30 rounded-lg">
                         <div className="flex items-center gap-4">
-                          {item.product.image && (
+                          {item.productId?.image && (
                             <img
-                              src={`http://localhost:5000${item.product.image}`}
-                              alt={item.product.name}
+                              src={`http://localhost:5000${item.productId.image}`}
+                              alt={item.productName || item.productId.name}
                               className="w-12 h-12 object-cover rounded-lg"
                             />
                           )}
                           <div>
-                            <h5 className="font-medium text-gray-200">{item.product.name}</h5>
+                            <h5 className="font-medium text-gray-200">{item.productName || item.productId?.name}</h5>
                             <p className="text-gray-400 text-sm">
-                              ₹{item.price} per {item.product.unit}
+                              ₹{item.pricePerUnit} per {item.unit || item.productId?.unit}
                             </p>
                           </div>
                         </div>
                         <div className="text-right">
                           <div className="font-medium text-gray-200">
-                            {item.quantity} {item.product.unit}s
+                            {item.quantity} {item.unit || item.productId?.unit}s
                           </div>
                           <div className="text-green-400 font-semibold">
-                            ₹{item.price * item.quantity}
+                            ₹{item.pricePerUnit * item.quantity}
                           </div>
                         </div>
                       </div>

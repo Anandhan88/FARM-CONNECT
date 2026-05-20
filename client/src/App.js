@@ -18,6 +18,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
 
 import Home from './pages/Home';
+import About from './pages/About';
+import Contact from './pages/Contact';
 import { AuthProvider } from './context/AuthContext';
 import { ShoppingContextProvider } from './context/ShoppingContext';
 
@@ -58,6 +60,8 @@ function App() {
             <main>
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/contact" element={<Contact />} />
                 <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
                 <Route path="/register" element={<PublicRoute><Register /></PublicRoute>} />
                 

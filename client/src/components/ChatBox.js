@@ -17,6 +17,8 @@ const ChatBox = ({ recipientId, recipientName, receiverId, receiverName, onClose
   const messagesEndRef = useRef(null);
   const typingTimeoutRef = useRef(null);
   const socketRef = useRef(null);
+  
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5004';
 
   // Extract user ID from currentUser or JWT
   useEffect(() => {
@@ -50,7 +52,6 @@ const ChatBox = ({ recipientId, recipientName, receiverId, receiverName, onClose
     if (!userId) return; // Wait for userId to be set
 
     const token = localStorage.getItem('token');
-    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5004';
 
     // Initialize Socket.io
     const socketInstance = io(apiUrl, {
@@ -193,12 +194,12 @@ const ChatBox = ({ recipientId, recipientName, receiverId, receiverName, onClose
 
     try {
       console.log('📤 Sending message to API:', messageData);
-      console.log('🔗 URL: http://localhost:5004/api/messages');
+      console.log(`🔗 URL: ${apiUrl}/api/messages`);
       console.log('🔐 Token present: YES');
 
       // Send via HTTP
       const response = await axios.post(
-        'http://localhost:5004/api/messages',
+        `${apiUrl}/api/messages`,
         messageData,
         {
           headers: {

@@ -115,7 +115,7 @@ exports.getUnreadCount = async (req, res) => {
 
 exports.getChatList = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = new mongoose.Types.ObjectId(req.user._id);
 
     // Get the last message from each conversation
     const lastMessages = await Message.aggregate([
@@ -158,7 +158,8 @@ exports.getChatList = async (req, res) => {
           _id: 1,
           lastMessage: 1,
           'user.name': 1,
-          'user.email': 1
+          'user.email': 1,
+          'user.role': 1
         }
       }
     ]);

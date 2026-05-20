@@ -209,17 +209,17 @@ const getOrderById = async (req, res) => {
     const userId = req.user._id;
 
     const order = await Order.findById(orderId)
-      .populate('buyer', 'name email phone')
-      .populate('items.product', 'name price unit image')
-      .populate('items.farmer', 'name email');
+      .populate('buyerId', 'name email phone')
+      .populate('items.productId', 'name price unit image')
+      .populate('items.farmerId', 'name email');
 
     if (!order) {
       return res.status(404).json({ error: 'Order not found' });
     }
 
     // Check if user has permission to view this order
-    const isBuyer = order.buyer._id.toString() === userId;
-    const isFarmer = order.items.some(item => item.farmer._id.toString() === userId);
+    const isBuyer = order.buyerId && order.buyerId._id.toString() === userId;
+    const isFarmer = order.items.some(item => item.farmerId && item.farmerId._id.toString() === userId);
 
     if (!isBuyer && !isFarmer) {
       return res.status(403).json({ error: 'Access denied' });
@@ -250,7 +250,7 @@ const updateOrderStatus = async (req, res) => {
     }
 
     // Check if farmer has permission to update this order
-    const isFarmer = order.items.some(item => item.farmer.toString() === farmerId);
+    const isFarmer = order.items.some(item => item.farmerId && item.farmerId.toString() === farmerId.toString());
     if (!isFarmer) {
       return res.status(403).json({ error: 'Access denied' });
     }
@@ -270,9 +270,9 @@ const updateOrderStatus = async (req, res) => {
     }
 
     const updatedOrder = await Order.findById(orderId)
-      .populate('buyer', 'name email phone')
-      .populate('items.product', 'name price unit image')
-      .populate('items.farmer', 'name email');
+      .populate('buyerId', 'name email phone')
+      .populate('items.productId', 'name price unit image')
+      .populate('items.farmerId', 'name email');
 
     // Send notification to buyer about status update
     const statusMessages = {
@@ -286,7 +286,7 @@ const updateOrderStatus = async (req, res) => {
 
     if (statusMessages[status]) {
       const notificationData = {
-        recipient: order.buyer,
+        recipient: order.buyerId,
         sender: farmerId,
         type: `order_${status}`,
         title: 'Order Status Update',
@@ -295,7 +295,7 @@ const updateOrderStatus = async (req, res) => {
           orderId: order._id,
           status: status,
           additionalInfo: {
-            farmerName: updatedOrder.items[0].farmer.name
+            farmerName: updatedOrder.items[0].farmerId ? updatedOrder.items[0].farmerId.name : 'Farmer'
           }
         },
         priority: status === 'delivered' ? 'high' : 'medium'
@@ -328,7 +328,7 @@ const cancelOrder = async (req, res) => {
     }
 
     // Check if buyer owns this order
-    if (order.buyer.toString() !== buyerId) {
+    if (order.buyerId.toString() !== buyerId.toString()) {
       return res.status(403).json({ error: 'Access denied' });
     }
 
@@ -339,7 +339,7 @@ const cancelOrder = async (req, res) => {
 
     // Restore product quantities
     for (const item of order.items) {
-      const product = await Product.findById(item.product);
+      const product = await Product.findById(item.productId);
       if (product) {
         product.quantity += item.quantity;
         await product.save();
@@ -351,9 +351,9 @@ const cancelOrder = async (req, res) => {
     await order.save();
 
     const updatedOrder = await Order.findById(orderId)
-      .populate('buyer', 'name email phone')
-      .populate('items.product', 'name price unit image')
-      .populate('items.farmer', 'name email');
+      .populate('buyerId', 'name email phone')
+      .populate('items.productId', 'name price unit image')
+      .populate('items.farmerId', 'name email');
 
     res.json(updatedOrder);
   } catch (error) {
